@@ -62,6 +62,23 @@ class ValueIterationAgent(ValueEstimationAgent):
     def runValueIteration(self):
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
+        states = self.getStates()
+        U_k = {0}
+        U = {0}
+        max = 0
+        for k in range(self.iterations):
+            U = U_k
+            for state in states:
+                actions = self.getPossibleActions(state)
+                for action in actions:
+                    P =self.getTransitionStatesAndProbs(state, action)
+                    for pair in P:
+                        Prob = pair[1]
+                        NextState = pair[0]
+                        R = self.getReward(state, action, pair[0])
+                        Q = Prob * (R + self.discount*U[NextState])
+
+
 
 
     def getValue(self, state):
@@ -89,7 +106,10 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        Actions = []
+        For action in self.getPossibleActions(state):
+            States = self.getTransitionStatesAndProbs(state, action)
+
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
